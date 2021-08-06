@@ -18,7 +18,9 @@ class Product(db.Model, BaseModel):
     weight = db.Column(db.Float, nullable=False)
     price = db.Column(db.Float, nullable=False)
     address = db.relationship(
-        "Address", secondary=ProductAdress, backref="product_address"
+        "Address",
+        secondary=ProductAdress,
+        backref=db.backref("product_address", lazy="dynamic"),
     )
 
     @validates("weight")
@@ -40,3 +42,6 @@ class Product(db.Model, BaseModel):
             return field
         else:
             raise AssertionError("field 'price should be >= 0")
+
+    def __str__(self):
+        return self.name
